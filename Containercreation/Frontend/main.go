@@ -8,9 +8,13 @@ import (
 	"time"
 )
 
-func hello(w http.ResponseWriter, req *http.Request) {
-
-	fmt.Fprintf(w, "hello\n")
+func activate(w http.ResponseWriter, req *http.Request) {
+	var s []int
+	for a := 0; a < 10000000000; a++ {
+		s = append(s, 0)
+	}
+	fmt.Fprintf(w, "%v", "<script type='text/javascript'> setInterval(function() {window.location.reload();},1000);</script>")
+	fmt.Fprintf(w, "Activating\n")
 }
 
 func mainpage(w http.ResponseWriter, req *http.Request) {
@@ -52,7 +56,7 @@ func headers(w http.ResponseWriter, req *http.Request) {
 func main() {
 	port := os.Getenv("PORT")
 	http.HandleFunc("/", mainpage)
-	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/activate", activate)
 	http.HandleFunc("/headers", headers)
 
 	http.ListenAndServe(":"+port, nil)
